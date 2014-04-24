@@ -13,5 +13,5 @@ Methods:
 >recordLine - input handle method
 
 >showIntro
- showHelp  - messages to user methods
- gameOver
+>showHelp  - messages to user methods
+>gameOver
