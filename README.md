@@ -6,12 +6,12 @@ FizzBuzz in Java is a reconstruction of the classic childrens game, in which par
 
 Methods:
 
->main - initialises instance of FizzBuzz
+>main >>initialises instance of FizzBuzz
 
->run - runs the game
+>run >>runs the game
 
->recordLine - input handle method
+>recordLine >>input handle method
 
->showIntro
->showHelp  - messages to user methods
->gameOver
+>showIntro,
+>showHelp &amp;
+>gameOver >> messages to user
