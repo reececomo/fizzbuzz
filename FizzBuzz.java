@@ -1,107 +1,107 @@
-/*
+/**
  * FizzBuzz in Java
- *     by Reece Notargiacomo
- */
+ *  @author Reece Notargiacomo
+ **/
+
 import java.io.*;
 
 public class FizzBuzz {
-	private InputStreamReader istream = new InputStreamReader(System.in) ;
-	private BufferedReader bufRead = new BufferedReader(istream) ;
 
-    public static void main(String[] args) {
+	private InputStreamReader inputStream = new InputStreamReader(System.in);
+	private BufferedReader bufferedRead = new BufferedReader(inputStream);
 
-        //initialise a new instance, and run
-    	FizzBuzz newFizzBuzz = new FizzBuzz();
-    	newFizzBuzz.run();
-    }
+	private final boolean GAMEOVER_WIN = true;
+	private final boolean GAMEOVER_LOSS = false;
 
-    public void run() {
-    	//Introduction and instruction
-    	showIntro();
+	public static void main(String[] args)
+	{
+		FizzBuzz fbGameInstance = new FizzBuzz();
+		fbGameInstance.showIntro();
+		fbGameInstance.startGame();
+	}
 
-        //for numbers 1 to 100,
-    	for(int i = 1; i <= 100; i++)
-    	{
-            //grab user input
-            String userInput = recordLine();
+	public void startGame()
+	{
+		int answer;
+		int userInput;
 
-            String answer = "";
-    		if(i%3==0) answer += "fizz";
-    		if(i%5==0) answer += "buzz";
-    		if (answer=="")
-    			answer += Integer.toString(i);
+		//for numbers 1 to 100,
+		for(int i = 1; i <= 100; i++)
+		{
+			answer = 0;
+			if(i%3==0) answer -= 1; //-1 for fizz, -2 for buzz
+			if(i%5==0) answer -= 2; //-3 for fizzbuzz
+			if(answer==0) answer = i;
 
-			if(answer.equals(userInput.toLowerCase())) {
+			userInput = Integer.parseInt(inputLine().toString());
+
+			if(answer==userInput)
+			{
 				if(i!=100)
-					System.out.println("    Correct!"); //correct answer
-				else {
-					System.out.println("Congratulations,
-						you've completed 1 to 100!"); //correct answer
-					System.out.println();
-				}
-			} else {
-				//incorrect answer ends the game
-				gameOver(answer);
+					System.out.println("Correct!"); //correct answer
+				else 
+					endGame(GAMEOVER_WIN,i); 
+			}
+			else
+			{
+				endGame(GAMEOVER_LOSS,i);
 				break;
 			}
-    	}
-
-    	//restart game after losing
-    	this.run();
-    }
-
-    private String recordLine() {
-    	String input = "";
-    	try {
-     		input = bufRead.readLine();
-		}
-		catch (IOException err) {
-			System.out.println("Error reading line");
-     		return "ERR";
 		}
 
-		if(input.equals("f")) input = "fizz";
-		if(input.equals("fb")) input = "fizzbuzz";
-		if(input.equals("b")) input = "buzz";
+		//restart game after losing
+		this.startGame();
+	}
 
-		if(input.equals("!help")) {
-            showHelp();
-            input = recordLine();
+	private String inputLine()
+	{
+		String input = "";
+
+		try {input = bufferedRead.readLine();}
+		catch (IOException err){
+			System.out.println("Error reading line: "+err);}
+
+		if(input.equals("f")||input.equals("fizz")) input = "-1";
+		if(input.equals("b")||input.equals("buzz")) input = "-2";
+		if(input.equals("fb")||input.equals("fizzbuzz")) input = "-3";
+
+		if(input.equals("!help"))
+		{
+			showHelp();
+			input = inputLine();
 		}
 
-		if(input.equals("!quit"))
-            System.exit(0);
+		if(input.toLowerCase().contains("quit")||input.toLowerCase().contains("exit"))
+			System.exit(0);
 
-     	return input;
-    }
+		return input;
+	}
 
-    private void showIntro() {
-    	System.out.println();
-    	System.out.println("//Welcome to FizzBuzz in Java");
-    	System.out.println("//type !help for the rules.");
-    	System.out.println();
-    	System.out.println("Let's go! (Starting with 1)");
-    	System.out.println();
-    }
+	private void showIntro() {
+		System.out.println();
+		System.out.println("//Welcome to FizzBuzz in Java");
+		System.out.println("//type !help for the rules.");
+		System.out.println();
+		System.out.println("Let's go! (Starting with 1)");
+		System.out.println();
+	}
 
-    private void showHelp() {
-    	System.out.println();
-    	System.out.println("//FizzBuzz help");
-    	System.out.println("//  For multiples of 3, type \"fizz\"
-    		or \"f\"");
-    	System.out.println("//  For multiples of 5, type \"buzz\"
-    		or \"b\"");
-    	System.out.println("//  For multiples of both, type \"fizzbuzz\"
-    		or \"fb\"");
-    	System.out.println("//  To exit the game safely, type \"!quit\"");
-    	System.out.println();
-    	System.out.println("Let's continue! (Starting from last number)");
-    }
+	private void showHelp() {
+		System.out.println();
+		System.out.println("//FizzBuzz help");
+		System.out.println("//  For multiples of 3, type \"fizz\" or \"f\"");
+		System.out.println("//  For multiples of 5, type \"buzz\" or \"b\"");
+		System.out.println("//  For multiples of both, type \"fizzbuzz\" or \"fb\"");
+		System.out.println("//  To exit the game safely, type \"quit\" or \"exit\"");
+		System.out.println();
+		System.out.println("Let's continue! (Starting from last number)");
+	}
 
-    private void gameOver(String expectedAnswer) {
-    	System.out.println("Wrong answer. ("+expectedAnswer+")");
-    	System.out.println();
-    	System.out.print("Game Over, press <ENTER> to continue.");
-    	recordLine();
-    }
+	private void endGame(boolean userWins,int expectedAnswer)
+	{
+		System.out.println("Wrong answer. ("+expectedAnswer+")");
+		System.out.println();
+		System.out.print("Game Over, press <ENTER> to continue.");
+		inputLine();
+	}
 }
