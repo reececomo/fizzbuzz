@@ -73,6 +73,13 @@ public class FizzBuzz {
 
 		if(input.toLowerCase().contains("quit")||input.toLowerCase().contains("exit"))
 			System.exit(0);
+		
+		// prepare input to be returned to game
+		try {
+			Integer.parseInt(input);
+		} catch(NumberFormatException e) {
+			return "0";
+		}
 
 		return input;
 	}
