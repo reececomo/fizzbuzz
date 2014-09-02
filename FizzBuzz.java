@@ -13,16 +13,19 @@ public class FizzBuzz {
 	public static void main(String[] args) {
 		FizzBuzz fbGameInstance = new FizzBuzz();
 		fbGameInstance.displayIntro();
-		fbGameInstance.startGame();
+		fbGameInstance.startGame(1);
 	}
 
-	public void startGame()
+	public void startGame(int startNum)
 	{
 		int answer;
 		int userInput;
 
+		System.out.println("Let's go! (Starting with "+startNum+")");
+		System.out.println();
+
 		//for numbers 1 to 100,
-		for(int i = 1; i <= 100; i++) {
+		for(int i = startNum; i <= startNum+99; i++) {
 			answer = 0;
 			if(i%3==0) answer -= 1; //-1 for fizz, -2 for buzz
 			if(i%5==0) answer -= 2; //-3 for fizzbuzz
@@ -31,7 +34,7 @@ public class FizzBuzz {
 				answer = i;	// if not fizz or buzz (or both)
 
 			// get User Input as a number
-			if(answer == Integer.parseInt(inputLine().toString()))
+			if(answer == getUserInput())
 				if(i!=100)
 					System.out.println("Correct!"); //correct answer
 				else 
@@ -43,64 +46,45 @@ public class FizzBuzz {
 		}
 
 		//restart game after losing
-		this.startGame();
+		this.startGame(startNum);
 	}
 
-	private String inputLine() {
+	private int getUserInput() {
 		
 		String input = "";
 
-		try {input = bufferedRead.readLine();}
-		catch (IOException err){
-			System.out.println("Error reading line: "+err);}
-
-		switch(input) {
-			case "f":
-			case "fizz":
-				input = "-1";
-				break;
-			case "b":
-			case "buzz":
-				input = "-2";
-				break;
-			case "fb":
-			case "fizzbuzz":
-				input = "-3";
-				break;
-			case "help":
-				input = displayHelp();
-				break;
-			case "quit":
-				System.exit(0);
-				break;
+		try {
+			input = bufferedRead.readLine();
+		} catch (IOException err) {
+			System.out.println("Error reading line: "+err);
+			return getUserInput();
 		}
 		
-		// prepare input to be returned to game
-		try {Integer.parseInt(input);}
-		catch(NumberFormatException e) {return false;}
+		if("f".equals(input) || "fizz".equals(input))
+			return -1;
+		if("b".equals(input) || "buzz".equals(input))
+			return -2;
+		if("fb".equals(input) || "fizzbuzz".equals(input))
+			return -3;
+		if("exit".equals(input))
+			System.exit(0);
 
-		return input;
+		// prepare input to be returned to game
+		try {return Integer.parseInt(input);}
+		catch(NumberFormatException e) {return 0;}
 	}
 
 	private void displayIntro() {
 		System.out.println();
-		System.out.println("//Welcome to FizzBuzz in Java");
-		System.out.println("//type !help for the rules.");
+		System.out.println("Welcome to FizzBuzz (in Java)");
 		System.out.println();
-		System.out.println("Let's go! (Starting with 1)");
+		System.out.println("  > the aim of the game is to count from 1 to 100");
+		System.out.println("  > but for multiples of 3, type \"fizz\" or \"f\" instead of the number");
+		System.out.println("  > and for multiples of 5, type \"buzz\" or \"b\"");
+		System.out.println("  > for multiples of both, type \"fizzbuzz\" or \"fb\"");
 		System.out.println();
-	}
-
-	private void displayHelp() {
+		System.out.println("Type \"exit\" to quit the game");
 		System.out.println();
-		System.out.println("//FizzBuzz help");
-		System.out.println("//  For multiples of 3, type \"fizz\" or \"f\"");
-		System.out.println("//  For multiples of 5, type \"buzz\" or \"b\"");
-		System.out.println("//  For multiples of both, type \"fizzbuzz\" or \"fb\"");
-		System.out.println("//  To exit the game safely, type \"quit\" or \"exit\"");
-		System.out.println();
-		System.out.println("Let's continue! (Starting from last number)");
-		return inputLine();
 	}
 
 	private void endGame(boolean userWins,int expectedAnswer)
@@ -108,10 +92,10 @@ public class FizzBuzz {
 		if(userWins)
 			System.out.println("Nice one!, you got every answer correct!");
 		else {
-			System.out.println("Wrong answer. ("+expectedAnswer+")");
+			System.out.println("Wrong answer!");
 			System.out.println();
-			System.out.print("Game Over, press <ENTER> to continue.");
-			inputLine();
+			System.out.print("Game Over: Press <ENTER> to start again.");
+			getUserInput();
 		}
 	}
 }
