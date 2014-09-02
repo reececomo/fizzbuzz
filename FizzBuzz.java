@@ -31,12 +31,12 @@ public class FizzBuzz {
 				answer = i;	// if not fizz or buzz (or both)
 
 			// get User Input as a number
-			if(answer == Integer.parseInt(inputLine().toString())) {
+			if(answer == Integer.parseInt(inputLine().toString()))
 				if(i!=100)
 					System.out.println("Correct!"); //correct answer
 				else 
 					endGame(true,i); 
-			} else {
+			else {
 				endGame(false,i);
 				break;
 			}
